@@ -54,7 +54,7 @@
     },
     {
       "type": "player",
-      "text": "I lived my life in such a hurry, as if i had so much time.... If only i had learned to slow down, to savor each moment, maybe the burden of these memories would not feel so heavy now.. How quickly my life passed, that big life of mine, now so small.... I got lost in that speed.. Now, towards the end of my journey, i face my regrets and \"what-ifs.\" as i think about how i spent my time, a sadness grows inside me.. Every happiness and smile, every tear and sorrow, every worry and anxiety, they all become memories.... I wish i had the wisdom i have now when i was younger.. I wish i had believed more in goodness and lived more of the beauty that life offered."
+      "text": "I lived my life in such a hurry, as if i had so much time.... If only i had learned to slow down, to savor each moment, maybe the burden of these memories would not feel so heavy now.. \nHow quickly my life passed, that big life of mine, now so small.... I got lost in that speed.. Now, towards the end of my journey, i face my regrets and \"what-ifs.\" as i think about how i spent my time, a sadness grows inside me.. Every happiness and smile, every tear and sorrow, every worry and anxiety, they all become memories.... I wish i had the wisdom i have now when i was younger.. I wish i had believed more in goodness and lived more of the beauty that life offered."
     },
     {
       "type": "info",
@@ -81,11 +81,11 @@
       "text": "Tulay:(she enters behind the curtain, placing some items she brought in a large bag into the cupboard, as if organising.)"
     },
     {
-      "type": "player",
+      "type": "info",
       "text": "Hi grandad, look we came to visit you with my friends"
     },
     {
-      "type": "player",
+      "type": "info",
       "text": "The machine was brought by the hospice volunteers ey.. I can imagine how happy you must have been when they told me about it."
     },
     {

@@ -236,7 +236,7 @@
             const popup = window.open("prompter.html", "_blank");
             setTimeout(async () => {
                 try {
-                    const res = await fetch("final_script_v2.json");
+                    const res = await fetch("final_script.json");
                     const json = await res.json();
                     loadAndSendJSON(json);
                     setSpeed(0);
