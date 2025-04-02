@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Prompter Screen</title>
+    <style>
+        body {
+            margin: 0;
+            background: black;
+            color: white;
+            font-size: 2rem;
+            line-height: 2.5rem;
+            font-family: sans-serif;
+            overflow: hidden;
+        }
+
+        #content {
+            padding: 2rem;
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-behavior: smooth;
+        }
+
+        .highlight {
+            background: black;
+            color: yellow;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="content"></div>
+
+    <script>
+        const content = document.getElementById("content");
+        const channel = new BroadcastChannel("prompter");
+
+        let scrollInterval = null;
+        let scrollSpeed = 0;
+        let speeds = [0, 0.3, 0.6, 1, 1.5];
+        let scrollAccumulator = 0;
+
+        function startScroll() {
+            stopScroll();
+            if (scrollSpeed > 0) {
+                scrollInterval = setInterval(() => {
+                    scrollAccumulator += scrollSpeed;
+                    const move = Math.floor(scrollAccumulator);
+                    if (move > 0) {
+                        content.scrollTop += move;
+                        scrollAccumulator -= move;
+                        highlightCurrentLine();
+                    }
+                }, 30);
+            }
+        }
+
+        function stopScroll() {
+            clearInterval(scrollInterval);
+        }
+
+        function highlightCurrentLine() {
+            const all = content.querySelectorAll("p");
+            const scrollTop = content.scrollTop;
+            const viewHeight = content.clientHeight;
+
+            all.forEach(p => p.classList.remove("highlight"));
+            for (let p of all) {
+                if (p.offsetTop >= scrollTop && p.offsetTop < scrollTop + viewHeight) {
+                    p.classList.add("highlight");
+                    break;
+                }
+            }
+        }
+
+        channel.onmessage = ({ data }) => {
+            console.log(data);
+            switch (data.type) {
+                case 'load-script':
+                    content.innerHTML = `<p>${data.value.replace(/\n/g, '<br>')}</p>`;
+                    highlightCurrentLine();
+                    break;
+                case 'start':
+                    startScroll();
+                    break;
+                case 'stop':
+                    stopScroll();
+                    break;
+                case 'speed':
+                    scrollSpeed = speeds[data.value];
+                    scrollAccumulator = 0;
+                    startScroll();
+                    break;
+                case 'init':
+                    scrollSpeed = speeds[data.value];
+                    scrollAccumulator = 0;
+                    // startScroll();
+                    break;
+                case 'scroll-up':
+                    content.scrollBy({ top: -50, behavior: 'smooth' });
+                    highlightCurrentLine();
+                    break;
+                case 'scroll-down':
+                    content.scrollBy({ top: 50, behavior: 'smooth' });
+                    highlightCurrentLine();
+                    break;
+            }
+        };
+        let isScrolling = false;
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key >= '0' && e.key <= '4') {
+                const speedLevel = parseInt(e.key);
+                scrollSpeed = speeds[speedLevel];
+                scrollAccumulator = 0;
+                if (isScrolling) startScroll();
+            } else if (e.key === ' ') {
+                e.preventDefault();
+                if (isScrolling) {
+                    stopScroll();
+                    isScrolling = false;
+                } else {
+                    scrollSpeed = 1;
+                    startScroll();
+                    isScrolling = true;
+                }
+            } else if (e.key === 'ArrowUp') {
+                content.scrollBy({ top: -50, behavior: 'smooth' });
+                highlightCurrentLine();
+            } else if (e.key === 'ArrowDown') {
+                content.scrollBy({ top: 50, behavior: 'smooth' });
+                highlightCurrentLine();
+            }
+        });
+
+
+    </script>
+</body>
+
+</html>
